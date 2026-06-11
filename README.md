@@ -71,6 +71,8 @@ Edit `group_vars/all.yml` to add or remove packages.
 
 - **OpenCode**: installed via `brew install anomalyco/tap/opencode` ([opencode.ai](https://opencode.ai/)).
 - **AWS / Databricks CLI**: managed through Homebrew (`awscli`, `databricks/tap/databricks`).
+- **Third-party taps**: Homebrew 6+ requires trusting tap formulae before install.
+  The playbook runs `brew trust --formula` for Databricks and OpenCode automatically.
 - **bumpversion**: installed via [`bump-my-version`](https://github.com/callowayproject/bump-my-version)
   (the maintained successor of `bump2version`); the binary is still `bumpversion`.
 

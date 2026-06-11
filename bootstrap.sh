@@ -22,6 +22,8 @@ fi
 
 eval "$(brew shellenv)"
 
+export HOMEBREW_NO_INSTALL_CONFIRMATION=1
+
 if ! command -v ansible-playbook >/dev/null 2>&1; then
   echo "Installing Ansible..."
   brew install ansible

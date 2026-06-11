@@ -4,12 +4,12 @@
   gather_facts: true
 
   vars:
-    homebrew_prefix: "{{ '/opt/homebrew' if ansible_machine == 'arm64' else '/usr/local' }}"
+    homebrew_prefix: "{{ '/opt/homebrew' if ansible_facts['machine'] == 'arm64' else '/usr/local' }}"
 
   pre_tasks:
     - name: Require macOS
       ansible.builtin.assert:
-        that: ansible_system == "Darwin"
+        that: ansible_facts['system'] == "Darwin"
         fail_msg: This playbook only supports macOS.
 
     - name: Require Homebrew
@@ -28,6 +28,18 @@
         name: "{{ item }}"
         state: present
       loop: "{{ homebrew_taps }}"
+
+    - name: Trust third-party Homebrew formulas
+      ansible.builtin.command:
+        argv:
+          - brew
+          - trust
+          - --formula
+          - "{{ item }}"
+      environment:
+        PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
+      loop: "{{ homebrew_trusted_formulas }}"
+      changed_when: false
 
     - name: Install Homebrew formulas
       community.general.homebrew:

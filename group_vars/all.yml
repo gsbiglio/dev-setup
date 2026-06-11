@@ -3,6 +3,12 @@ homebrew_taps:
   - databricks/tap
   - anomalyco/tap
 
+# Homebrew 6+ requires trusting third-party tap formulae before install.
+# Prefer formula-level trust over trusting entire taps.
+homebrew_trusted_formulas:
+  - databricks/tap/databricks
+  - anomalyco/tap/opencode
+
 homebrew_formulas:
   - pyenv
   - pipx
