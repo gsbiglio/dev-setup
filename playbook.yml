@@ -1,0 +1,90 @@
+---
+- name: Development machine setup
+  hosts: local
+  gather_facts: true
+
+  vars:
+    homebrew_prefix: "{{ '/opt/homebrew' if ansible_machine == 'arm64' else '/usr/local' }}"
+
+  pre_tasks:
+    - name: Require macOS
+      ansible.builtin.assert:
+        that: ansible_system == "Darwin"
+        fail_msg: This playbook only supports macOS.
+
+    - name: Require Homebrew
+      ansible.builtin.stat:
+        path: "{{ homebrew_prefix }}/bin/brew"
+      register: brew_binary
+
+    - name: Fail if Homebrew is missing
+      ansible.builtin.fail:
+        msg: Run ./bootstrap.sh to install Homebrew and Ansible first.
+      when: not brew_binary.stat.exists
+
+  tasks:
+    - name: Add Homebrew taps
+      community.general.homebrew_tap:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ homebrew_taps }}"
+
+    - name: Install Homebrew formulas
+      community.general.homebrew:
+        name: "{{ item }}"
+        state: present
+        update_homebrew: "{{ ansible_loop.first }}"
+      loop: "{{ homebrew_formulas }}"
+      loop_control:
+        extended: true
+
+    - name: Install Homebrew casks
+      community.general.homebrew_cask:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ homebrew_casks }}"
+
+    - name: Install global CLI tools with pipx
+      community.general.pipx:
+        name: "{{ item }}"
+        state: present
+      environment:
+        PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
+      loop: "{{ pipx_packages }}"
+
+    - name: Install Python versions with pyenv
+      ansible.builtin.command: "pyenv install -s {{ item }}"
+      register: pyenv_install_result
+      changed_when: pyenv_install_result.stdout is search('Installed Python')
+      environment:
+        PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
+        PYENV_ROOT: "{{ ansible_env.HOME }}/.pyenv"
+      loop: "{{ python_versions }}"
+
+    - name: Configure shell PATH for Warp and zsh
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        marker: "# >>> {mark} dev-setup >>>"
+        block: |
+          export PATH="{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin:$PATH"
+
+          export PYENV_ROOT="$HOME/.pyenv"
+          [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+          if command -v pyenv >/dev/null 2>&1; then
+            eval "$(pyenv init - zsh)"
+          fi
+
+          export PATH="$HOME/.local/bin:$PATH"
+        create: true
+
+    - name: Ensure Neovim config directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.config/nvim"
+        state: directory
+        mode: "0755"
+
+    - name: Deploy Neovim configuration
+      ansible.builtin.copy:
+        src: files/nvim/init.lua
+        dest: "{{ ansible_env.HOME }}/.config/nvim/init.lua"
+        mode: "0644"

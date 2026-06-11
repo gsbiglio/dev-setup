@@ -1,0 +1,39 @@
+---
+homebrew_taps:
+  - databricks/tap
+  - anomalyco/tap
+
+homebrew_formulas:
+  - pyenv
+  - pipx
+  - postgresql@16
+  - neovim
+  - awscli
+  - databricks
+  - opencode
+
+homebrew_casks:
+  - google-chrome
+  - whatsapp
+  - docker-desktop
+  - linear
+  - cursor
+  - spotify
+  - nordlayer
+  - dbeaver-community
+  - alt-tab
+  - rectangle
+  - tad
+  - ollama
+
+pipx_packages:
+  - ruff
+  - bump-my-version
+  - pre-commit
+
+python_versions:
+  - "3.9"
+  - "3.10"
+  - "3.11"
+  - "3.12"
+  - "3.13"

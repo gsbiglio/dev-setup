@@ -1,0 +1,11 @@
+# Ansible
+*.retry
+collections/
+
+# macOS
+.DS_Store
+
+# Python (legacy)
+.venv
+__pycache__/
+*.py[oc]
