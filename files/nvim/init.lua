@@ -14,41 +14,66 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = { "python", "lua", "vim", "bash", "json", "yaml" },
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-    },
-  },
-  {
-    "williambles/mason.nvim",
-    opts = {},
-  },
-  {
-    "williambles/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = { "pyright", "ruff" },
-      automatic_installation = true,
-    },
-  },
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = { "williambles/mason.nvim", "williambles/mason-lspconfig.nvim" },
     config = function()
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      local lspconfig = require("lspconfig")
+      local ts = require("nvim-treesitter")
+      local parsers = { "python", "lua", "vim", "vimdoc", "bash", "json", "yaml" }
 
-      lspconfig.pyright.setup({ capabilities = capabilities })
-      lspconfig.ruff.setup({
-        capabilities = capabilities,
+      ts.setup({})
+
+      local installed = ts.get_installed()
+      local to_install = vim.iter(parsers):filter(function(parser)
+        return not vim.list_contains(installed, parser)
+      end):totable()
+
+      if #to_install > 0 then
+        ts.install(to_install):await(function()
+          vim.schedule(function()
+            vim.cmd("silent! doautoall FileType")
+          end)
+        end)
+      end
+
+      local function start_treesitter(buf)
+        local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+        if not lang then
+          return
+        end
+        local ok = pcall(vim.treesitter.language.add, lang)
+        if not ok then
+          return
+        end
+        pcall(vim.treesitter.start, buf)
+        vim.bo[buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = parsers,
+        callback = function(args)
+          start_treesitter(args.buf)
+        end,
+      })
+    end,
+  },
+  {
+    "mason-org/mason-lspconfig.nvim",
+    opts = {
+      ensure_installed = { "pyright", "ruff", "tree-sitter-cli" },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
+    config = function(_, opts)
+      vim.lsp.config("ruff", {
         init_options = {
           settings = {
             logLevel = "error",
           },
         },
       })
+      require("mason-lspconfig").setup(opts)
     end,
   },
 })

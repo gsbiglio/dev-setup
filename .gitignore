@@ -4,6 +4,7 @@ collections/
 
 # macOS
 .DS_Store
+.nvimlog
 
 # Python (legacy)
 .venv
