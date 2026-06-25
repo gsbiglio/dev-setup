@@ -31,4 +31,13 @@ fi
 
 ansible-galaxy collection install -r requirements.yml
 
-ansible-playbook playbook.yml "$@"
+if [[ -z "${HOMEBREW_SUDO_PASSWORD:-}" ]]; then
+  read -rsp "Contraseña de macOS (para instalar apps en /Applications): " HOMEBREW_SUDO_PASSWORD
+  echo
+fi
+
+ansible-playbook playbook.yml \
+  --extra-vars "homebrew_sudo_password=${HOMEBREW_SUDO_PASSWORD}" \
+  "$@"
+
+unset HOMEBREW_SUDO_PASSWORD

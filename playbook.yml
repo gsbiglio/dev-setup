@@ -54,7 +54,9 @@
       community.general.homebrew_cask:
         name: "{{ item }}"
         state: present
+        sudo_password: "{{ homebrew_sudo_password }}"
       loop: "{{ homebrew_casks }}"
+      no_log: true
 
     - name: Install global CLI tools with pipx
       community.general.pipx:
