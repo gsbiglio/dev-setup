@@ -12,6 +12,8 @@ homebrew_trusted_formulas:
 homebrew_formulas:
   - pyenv
   - pipx
+  - uv
+  - poetry
   - postgresql@16
   - neovim
   - awscli

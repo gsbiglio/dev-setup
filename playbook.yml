@@ -22,6 +22,18 @@
         msg: Run ./bootstrap.sh to install Homebrew and Ansible first.
       when: not brew_binary.stat.exists
 
+    - name: Check Xcode Command Line Tools
+      ansible.builtin.command: xcode-select -p
+      register: xcode_clt
+      changed_when: false
+      failed_when: false
+
+    - name: Fail if Xcode Command Line Tools are missing
+      ansible.builtin.fail:
+        msg: >-
+          Xcode Command Line Tools are required. Run: xcode-select --install
+      when: xcode_clt.rc != 0
+
   tasks:
     - name: Add Homebrew taps
       community.general.homebrew_tap:

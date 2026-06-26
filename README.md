@@ -19,9 +19,11 @@ if something fails you just run it again.
 ## Requirements
 
 - macOS (Apple Silicon or Intel)
+- Xcode Command Line Tools (`xcode-select --install` if missing)
 - Internet connection
 
-That's it. `bootstrap.sh` installs Homebrew and Ansible for you.
+`bootstrap.sh` checks for Command Line Tools, installs Homebrew and Ansible, then
+runs the playbook.
 
 ## Usage
 
@@ -50,7 +52,7 @@ Edit `group_vars/all.yml` to add or remove packages.
 | Category | Packages |
 |----------|----------|
 | Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, DBeaver, AltTab, Rectangle, Tad, Ollama |
-| CLI (formula) | pyenv, pipx, PostgreSQL, Neovim, AWS CLI, Databricks CLI, [OpenCode](https://opencode.ai/) |
+| CLI (formula) | pyenv, pipx, uv, poetry, PostgreSQL, Neovim, AWS CLI, Databricks CLI, [OpenCode](https://opencode.ai/) |
 | pipx | ruff, bump-my-version, pre-commit |
 | Python (pyenv) | 3.9, 3.10, 3.11, 3.12, 3.13 |
 | Shell | `PATH` block in `~/.zshrc` (Warp-compatible) |
@@ -80,6 +82,8 @@ Edit `group_vars/all.yml` to add or remove packages.
 
 Some things must be done by hand the first time:
 
+- Complete the Xcode Command Line Tools installer if prompted on first run
+  (`xcode-select --install`)
 - Grant Accessibility permissions to Rectangle and AltTab
   (*System Settings → Privacy & Security → Accessibility*)
 - Sign in to Cursor, Linear, Spotify, NordLayer, WhatsApp and Chrome

@@ -9,6 +9,14 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
   exit 1
 fi
 
+if ! xcode-select -p >/dev/null 2>&1; then
+  echo "Xcode Command Line Tools are required."
+  echo "Opening installer..."
+  xcode-select --install
+  echo "Complete the installer dialog, then re-run ./bootstrap.sh"
+  exit 1
+fi
+
 if ! command -v brew >/dev/null 2>&1; then
   echo "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
