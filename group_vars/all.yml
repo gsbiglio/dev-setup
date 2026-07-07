@@ -10,10 +10,7 @@ homebrew_trusted_formulas:
   - anomalyco/tap/opencode
 
 homebrew_formulas:
-  - pyenv
-  - pipx
   - uv
-  - poetry
   - postgresql@16
   - neovim
   - awscli
@@ -29,13 +26,15 @@ homebrew_casks:
   - cursor
   - spotify
   - nordlayer
+  - pritunl
+  - notion
   - dbeaver-community
   - alt-tab
   - rectangle
   - tad
   - ollama
 
-pipx_packages:
+uv_global_tools:
   - ruff
   - bump-my-version
   - pre-commit

@@ -11,8 +11,7 @@ if something fails you just run it again.
 - One command to provision a fresh macOS machine
 - Idempotent and re-runnable (powered by Ansible + Homebrew)
 - A single file to declare what you want installed (`group_vars/all.yml`)
-- Multiple Python versions via `pyenv`
-- Global Python CLIs via `pipx`
+- Python versions, project deps and global CLIs via [`uv`](https://docs.astral.sh/uv/)
 - Shell `PATH` wired up for `zsh` (Warp-friendly)
 - Minimal Neovim config (Treesitter + Pyright + Ruff)
 
@@ -51,10 +50,10 @@ Edit `group_vars/all.yml` to add or remove packages.
 
 | Category | Packages |
 |----------|----------|
-| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, DBeaver, AltTab, Rectangle, Tad, Ollama |
-| CLI (formula) | pyenv, pipx, uv, poetry, PostgreSQL, Neovim, AWS CLI, Databricks CLI, [OpenCode](https://opencode.ai/) |
-| pipx | ruff, bump-my-version, pre-commit |
-| Python (pyenv) | 3.9, 3.10, 3.11, 3.12, 3.13 |
+| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama |
+| CLI (formula) | uv, PostgreSQL, Neovim, AWS CLI, Databricks CLI, [OpenCode](https://opencode.ai/) |
+| uv global tools | ruff, bump-my-version, pre-commit |
+| Python (uv) | 3.9, 3.10, 3.11, 3.12, 3.13, 3.14.5 |
 | Shell | `PATH` block in `~/.zshrc` (Warp-compatible) |
 | Neovim | Minimal config with Treesitter, Pyright and Ruff |
 
@@ -75,6 +74,8 @@ Edit `group_vars/all.yml` to add or remove packages.
 - **AWS / Databricks CLI**: managed through Homebrew (`awscli`, `databricks/tap/databricks`).
 - **Third-party taps**: Homebrew 6+ requires trusting tap formulae before install.
   The playbook runs `brew trust --formula` for Databricks and OpenCode automatically.
+- **Python**: managed entirely with `uv` — versions via `uv python install`, global CLIs via
+  `uv tool install`, and project deps via `uv sync` / `uv add`.
 - **bumpversion**: installed via [`bump-my-version`](https://github.com/callowayproject/bump-my-version)
   (the maintained successor of `bump2version`); the binary is still `bumpversion`.
 
@@ -86,7 +87,7 @@ Some things must be done by hand the first time:
   (`xcode-select --install`)
 - Grant Accessibility permissions to Rectangle and AltTab
   (*System Settings → Privacy & Security → Accessibility*)
-- Sign in to Cursor, Linear, Spotify, NordLayer, WhatsApp and Chrome
+- Sign in to Cursor, Linear, Spotify, NordLayer, Pritunl, Notion, WhatsApp and Chrome
 - Generate or copy your SSH/GPG keys
 - Start Docker Desktop and accept its terms
 

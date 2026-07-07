@@ -70,22 +70,31 @@
       loop: "{{ homebrew_casks }}"
       no_log: true
 
-    - name: Install global CLI tools with pipx
-      community.general.pipx:
-        name: "{{ item }}"
-        state: present
+    - name: Install Python versions with uv
+      ansible.builtin.command:
+        argv:
+          - uv
+          - python
+          - install
+          - "{{ item }}"
+      register: uv_python_install_result
+      changed_when: uv_python_install_result.stdout is search('Installed Python')
       environment:
         PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
-      loop: "{{ pipx_packages }}"
-
-    - name: Install Python versions with pyenv
-      ansible.builtin.command: "pyenv install -s {{ item }}"
-      register: pyenv_install_result
-      changed_when: pyenv_install_result.stdout is search('Installed Python')
-      environment:
-        PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
-        PYENV_ROOT: "{{ ansible_env.HOME }}/.pyenv"
       loop: "{{ python_versions }}"
+
+    - name: Install global CLI tools with uv
+      ansible.builtin.command:
+        argv:
+          - uv
+          - tool
+          - install
+          - "{{ item }}"
+      register: uv_tool_install_result
+      changed_when: "'already installed' not in uv_tool_install_result.stdout"
+      environment:
+        PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
+      loop: "{{ uv_global_tools }}"
 
     - name: Configure shell PATH for Warp and zsh
       ansible.builtin.blockinfile:
@@ -93,13 +102,6 @@
         marker: "# >>> {mark} dev-setup >>>"
         block: |
           export PATH="{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin:$PATH"
-
-          export PYENV_ROOT="$HOME/.pyenv"
-          [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-          if command -v pyenv >/dev/null 2>&1; then
-            eval "$(pyenv init - zsh)"
-          fi
-
           export PATH="$HOME/.local/bin:$PATH"
         create: true
 
