@@ -16,6 +16,7 @@ homebrew_formulas:
   - awscli
   - databricks
   - terraform
+  - terragrunt
   - opencode
 
 homebrew_casks:
@@ -33,6 +34,7 @@ homebrew_casks:
   - rectangle
   - tad
   - ollama
+  - leapp
 
 uv_global_tools:
   - ruff
