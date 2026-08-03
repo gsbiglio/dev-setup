@@ -50,7 +50,7 @@ Edit `group_vars/all.yml` to add or remove packages.
 
 | Category | Packages |
 |----------|----------|
-| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama |
+| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama, Leapp, Muesli |
 | CLI (formula) | uv, PostgreSQL, Neovim, AWS CLI, Databricks CLI, [OpenCode](https://opencode.ai/) |
 | uv global tools | ruff, bump-my-version, pre-commit |
 | Python (uv) | 3.9, 3.10, 3.11, 3.12, 3.13, 3.14.5 |

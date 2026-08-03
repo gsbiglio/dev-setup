@@ -35,6 +35,7 @@ homebrew_casks:
   - tad
   - ollama
   - leapp
+  - muesli
 
 uv_global_tools:
   - ruff
