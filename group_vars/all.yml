@@ -38,6 +38,7 @@ homebrew_casks:
   - ollama
   - leapp
   - muesli
+  - slack
   - warp
 
 # macOS system preferences replicated from the reference machine.

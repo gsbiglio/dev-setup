@@ -51,7 +51,7 @@ Edit `group_vars/all.yml` to add or remove packages.
 
 | Category | Packages |
 |----------|----------|
-| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama, Leapp, Muesli, Warp |
+| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama, Leapp, Muesli, Slack, Warp |
 | CLI (formula) | uv, PostgreSQL, Neovim, AWS CLI, Databricks CLI, Terraform, Terragrunt, [OpenCode](https://opencode.ai/) |
 | macOS prefs | Dock a la izquierda, velocidad del mouse/trackpad, teclados ABC + Latin American, bloqueo con clave/Touch ID |
 | uv global tools | ruff, bump-my-version, pre-commit |
@@ -93,7 +93,7 @@ Some things must be done by hand the first time:
   (`xcode-select --install`)
 - Grant Accessibility permissions to Rectangle and AltTab
   (*System Settings → Privacy & Security → Accessibility*)
-- Sign in to Cursor, Linear, Spotify, NordLayer, Pritunl, Notion, WhatsApp, Chrome and Warp
+- Sign in to Cursor, Linear, Spotify, NordLayer, Pritunl, Notion, WhatsApp, Chrome, Slack and Warp
 - Enroll Touch ID fingerprints if the Mac supports it
 - Generate or copy your SSH/GPG keys
 - Start Docker Desktop and accept its terms
