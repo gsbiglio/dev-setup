@@ -13,6 +13,7 @@ if something fails you just run it again.
 - A single file to declare what you want installed (`group_vars/all.yml`)
 - Python versions, project deps and global CLIs via [`uv`](https://docs.astral.sh/uv/)
 - Shell `PATH` wired up for `zsh` (Warp-friendly)
+- macOS preferences (Dock, mouse, keyboards, screen lock)
 - Minimal Neovim config (Treesitter + Pyright + Ruff)
 
 ## Requirements
@@ -50,8 +51,9 @@ Edit `group_vars/all.yml` to add or remove packages.
 
 | Category | Packages |
 |----------|----------|
-| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama, Leapp, Muesli |
-| CLI (formula) | uv, PostgreSQL, Neovim, AWS CLI, Databricks CLI, [OpenCode](https://opencode.ai/) |
+| Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama, Leapp, Muesli, Warp |
+| CLI (formula) | uv, PostgreSQL, Neovim, AWS CLI, Databricks CLI, Terraform, Terragrunt, [OpenCode](https://opencode.ai/) |
+| macOS prefs | Dock a la izquierda, velocidad del mouse/trackpad, teclados ABC + Latin American, bloqueo con clave/Touch ID |
 | uv global tools | ruff, bump-my-version, pre-commit |
 | Python (uv) | 3.9, 3.10, 3.11, 3.12, 3.13, 3.14.5 |
 | Shell | `PATH` block in `~/.zshrc` (Warp-compatible) |
@@ -73,7 +75,11 @@ Edit `group_vars/all.yml` to add or remove packages.
 - **OpenCode**: installed via `brew install anomalyco/tap/opencode` ([opencode.ai](https://opencode.ai/)).
 - **AWS / Databricks CLI**: managed through Homebrew (`awscli`, `databricks/tap/databricks`).
 - **Third-party taps**: Homebrew 6+ requires trusting tap formulae before install.
-  The playbook runs `brew trust --formula` for Databricks and OpenCode automatically.
+  The playbook runs `brew trust --formula` for Databricks, OpenCode and Terraform automatically.
+- **macOS preferences**: edit the `macos_preferences` block in `group_vars/all.yml`.
+  Some changes (keyboard layouts, screen lock) may require logging out or rebooting once.
+- **Touch ID**: the playbook enables unlock with Touch ID when the hardware supports it,
+  but enrolling fingerprints still has to be done manually in System Settings.
 - **Python**: managed entirely with `uv` — versions via `uv python install`, global CLIs via
   `uv tool install`, and project deps via `uv sync` / `uv add`.
 - **bumpversion**: installed via [`bump-my-version`](https://github.com/callowayproject/bump-my-version)
@@ -87,7 +93,8 @@ Some things must be done by hand the first time:
   (`xcode-select --install`)
 - Grant Accessibility permissions to Rectangle and AltTab
   (*System Settings → Privacy & Security → Accessibility*)
-- Sign in to Cursor, Linear, Spotify, NordLayer, Pritunl, Notion, WhatsApp and Chrome
+- Sign in to Cursor, Linear, Spotify, NordLayer, Pritunl, Notion, WhatsApp, Chrome and Warp
+- Enroll Touch ID fingerprints if the Mac supports it
 - Generate or copy your SSH/GPG keys
 - Start Docker Desktop and accept its terms
 

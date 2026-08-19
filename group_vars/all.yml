@@ -2,12 +2,14 @@
 homebrew_taps:
   - databricks/tap
   - anomalyco/tap
+  - hashicorp/tap
 
 # Homebrew 6+ requires trusting third-party tap formulae before install.
 # Prefer formula-level trust over trusting entire taps.
 homebrew_trusted_formulas:
   - databricks/tap/databricks
   - anomalyco/tap/opencode
+  - hashicorp/tap/terraform
 
 homebrew_formulas:
   - uv
@@ -15,7 +17,7 @@ homebrew_formulas:
   - neovim
   - awscli
   - databricks
-  - terraform
+  - hashicorp/tap/terraform
   - terragrunt
   - opencode
 
@@ -36,6 +38,26 @@ homebrew_casks:
   - ollama
   - leapp
   - muesli
+  - warp
+
+# macOS system preferences replicated from the reference machine.
+macos_preferences:
+  dock_orientation: left
+
+  # Tracking speed uses macOS internal scale (typically 0.0-3.0).
+  mouse_tracking_speed: 2.0
+
+  keyboard_input_sources:
+    - InputSourceKind: Keyboard Layout
+      "KeyboardLayout ID": 252
+      "KeyboardLayout Name": ABC
+    - InputSourceKind: Keyboard Layout
+      "KeyboardLayout ID": 89
+      "KeyboardLayout Name": Latin American
+
+  require_password_on_wake: true
+  require_password_delay_seconds: 0
+  touch_id_unlock: true
 
 uv_global_tools:
   - ruff
