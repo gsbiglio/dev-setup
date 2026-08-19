@@ -44,6 +44,10 @@ homebrew_casks:
 # macOS system preferences replicated from the reference machine.
 macos_preferences:
   dock_orientation: left
+  dock_autohide: true
+  dock_autohide_delay: 0
+  dock_autohide_time_modifier: 0.4
+  trackpad_tap_to_click: true
 
   # Tracking speed uses macOS internal scale (typically 0.0-3.0).
   mouse_tracking_speed: 2.0

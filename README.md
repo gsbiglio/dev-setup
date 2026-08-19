@@ -53,7 +53,7 @@ Edit `group_vars/all.yml` to add or remove packages.
 |----------|----------|
 | Apps (cask) | Chrome, WhatsApp, Docker Desktop, Linear, Cursor, Spotify, NordLayer, Pritunl, Notion, DBeaver, AltTab, Rectangle, Tad, Ollama, Leapp, Muesli, Slack, Warp |
 | CLI (formula) | uv, PostgreSQL, Neovim, AWS CLI, Databricks CLI, Terraform, Terragrunt, [OpenCode](https://opencode.ai/) |
-| macOS prefs | Dock a la izquierda, velocidad del mouse/trackpad, teclados ABC + Latin American, bloqueo con clave/Touch ID |
+| macOS prefs | Dock a la izquierda con auto-ocultar, tap to click, velocidad del mouse/trackpad, teclados ABC + Latin American, bloqueo con clave/Touch ID |
 | uv global tools | ruff, bump-my-version, pre-commit |
 | Python (uv) | 3.9, 3.10, 3.11, 3.12, 3.13, 3.14.5 |
 | Shell | `PATH` block in `~/.zshrc` (Warp-compatible) |

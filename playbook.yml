@@ -117,13 +117,36 @@
         dest: "{{ ansible_env.HOME }}/.config/nvim/init.lua"
         mode: "0644"
 
-    - name: Configure Dock orientation
+    - name: Configure Dock preferences
       community.general.osx_defaults:
         domain: com.apple.dock
-        key: orientation
-        type: string
-        value: "{{ macos_preferences.dock_orientation }}"
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      loop:
+        - key: orientation
+          type: string
+          value: "{{ macos_preferences.dock_orientation }}"
+        - key: autohide
+          type: bool
+          value: "{{ macos_preferences.dock_autohide }}"
+        - key: autohide-delay
+          type: float
+          value: "{{ macos_preferences.dock_autohide_delay }}"
+        - key: autohide-time-modifier
+          type: float
+          value: "{{ macos_preferences.dock_autohide_time_modifier }}"
       notify: Restart Dock
+
+    - name: Enable trackpad tap to click
+      community.general.osx_defaults:
+        domain: "{{ item }}"
+        key: Clicking
+        type: bool
+        value: "{{ macos_preferences.trackpad_tap_to_click }}"
+      loop:
+        - com.apple.AppleMultitouchTrackpad
+        - com.apple.driver.AppleBluetoothMultitouch.trackpad
 
     - name: Configure mouse and trackpad tracking speed
       community.general.osx_defaults:
